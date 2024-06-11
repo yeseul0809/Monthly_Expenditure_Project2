@@ -5,11 +5,13 @@ import MonthButton from "../components/MonthButton";
 import List from "../components/List";
 import PieChart from "../components/PieChart";
 import Header from "../components/Header";
+import { Layout } from "../components/Layout";
 
 const Home = () => {
   return (
     <>
-      <Header title="MONEY RECORD" />
+      <Layout />
+      {/* <Header title="MONEY RECORD" /> */}
       <StMain>
         <StHomeSection>
           <InputForm />

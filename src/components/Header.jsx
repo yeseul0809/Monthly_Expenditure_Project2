@@ -17,11 +17,11 @@ const StHeader = styled.header`
   max-width: 800px;
   width: 100%;
   display: flex;
-  justify-content: center; /* 배경을 가운데로 */
+  justify-content: center;
   align-items: center;
   padding: 0.7rem;
   background-color: #f0f0f0;
-  margin: 15px auto; /* 상하 마진을 auto로 설정하여 가운데 정렬 */
+  margin: 15px auto;
   border-radius: 20px;
 `;
 
