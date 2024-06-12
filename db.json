@@ -2,6 +2,7 @@
   "expenses": [
     {
       "id": "46869445-5f9c-4650-941f-41bd9457bc07",
+      "month": 1,
       "date": "2024-01-03",
       "category": "개인사업",
       "price": 1000000,
@@ -10,6 +11,7 @@
     },
     {
       "id": "a5c0d8de-d010-4d07-9934-29765051a7ea",
+      "month": 1,
       "date": "2024-01-07",
       "category": "개인사업",
       "price": 1000,
@@ -18,7 +20,8 @@
     },
     {
       "id": "0d0a966e-5c35-4bf0-aca4-f2b1265a432d",
-      "date": "2024-01-13",
+      "month": 1,
+      "date": "2024-02-13",
       "category": "식비",
       "price": 2000,
       "description": "메가커피",
@@ -26,14 +29,16 @@
     },
     {
       "id": "9aba6d72-5ee7-4f02-a4d4-e8bbff9ded4b",
-      "date": "2024-01-17",
-      "category": "회식",
-      "price": 210000,
+      "month": 1,
+      "date": "2024-02-17",
+      "category": "식비",
+      "price": 21000,
       "description": "대광참치",
       "createdBy": "Rosie"
     },
     {
       "id": "b82b213e-8164-4c89-94b0-7246cdcfc4f9",
+      "month": 1,
       "date": "2024-01-21",
       "category": "식비",
       "price": 412000,
@@ -42,19 +47,29 @@
     },
     {
       "id": "d180194f-7c27-428a-8cd9-ad9114e58821",
-      "date": "2024-02-22",
+      "month": 1,
+      "date": "2024-06-22",
       "category": "도서",
-      "price": 83000,
+      "price": 23000,
       "description": "리액트 마스터",
       "createdBy": "Me"
     },
     {
       "id": "0abf06c3-8f0e-4ea1-9691-7facab0a91cb",
-      "date": "2024-02-18",
+      "month": 1,
+      "date": "2024-01-30",
       "category": "외식",
       "price": 100000,
       "description": "세광양대창",
       "createdBy": "Me"
+    },
+    {
+      "id": "e64e4e92-43df-499f-90f4-b8f7b2907e07",
+      "date": "2024-06-12",
+      "category": "쇼핑",
+      "price": "800",
+      "description": "책구매",
+      "createdBy": "ys0809"
     }
   ]
 }

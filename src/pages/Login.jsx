@@ -8,7 +8,7 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [id, setId] = useState("");
+  const [id, setuserId] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useContext(AuthContext);
 
@@ -53,7 +53,7 @@ const Login = () => {
           <StInput
             type="text"
             value={id}
-            onChange={(e) => setId(e.target.value)}
+            onChange={(e) => setuserId(e.target.value)}
             placeholder="ID"
           />
           <p>비밀번호</p>

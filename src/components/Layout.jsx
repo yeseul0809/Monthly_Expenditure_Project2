@@ -12,7 +12,7 @@ export const Layout = ({ title }) => {
 
   const handleLogOut = () => {
     logout();
-    navigate(`/`);
+    navigate(`/`); // 수정해야함. 라우터 프라이빗으로 하면 navigate 안해도됨
   };
 
   useEffect(() => {
