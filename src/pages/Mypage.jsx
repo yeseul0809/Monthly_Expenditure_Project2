@@ -4,14 +4,19 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import { Layout } from "../components/Layout";
 
 // 닉네임, 프로필 사진 변경 UI
+// 1. useEffect 조회
+// 2. form 태그로 유저정보 수정
+// -> 둘 다 로그인 했다는 인증정보 (accessToken) 필요.
 
 export const Mypage = () => {
   const navigate = useNavigate();
-
   const { isAuthenticated } = useContext(AuthContext);
   const [newNickname, setNewNickname] = useState("");
+  const [imgFile, setImgFile] = useState(null);
+  const [imgPreview, setImgPreview] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
   const handleInfoChange = async (e) => {
@@ -20,6 +25,10 @@ export const Mypage = () => {
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
       formData.append("nickname", newNickname);
+
+      if (imgFile) {
+        formData.append("avatar", imgFile);
+      }
 
       const response = await axios.patch(
         "https://moneyfulpublicpolicy.co.kr/profile",
@@ -35,21 +44,35 @@ export const Mypage = () => {
         setUserInfo((prevState) => ({
           ...prevState,
           nickname: response.data.nickname,
+          avatar: response.data.avatar,
         }));
-        alert("닉네임이 변경되었습니다!");
+        Swal.fire("프로필이 업데이트되었습니다!");
         setNewNickname("");
+        setImgFile(null);
+        setImgPreview(null);
       } else {
-        alert("닉네임 변경에 실패했습니다.");
+        Swal.fire("프로필 업데이트에 실패했습니다.", "", "error");
       }
     } catch (error) {
-      console.error("Failed to update nickname:", error);
-      alert("닉네임 변경에 실패했습니다.");
+      console.error("Failed to update profile:", error);
+      Swal.fire("프로필 업데이트에 실패했습니다.", "", "error");
     }
+  };
+
+  const handleImgChange = (e) => {
+    const file = e.target.files[0];
+    setImgFile(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImgPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   useEffect(() => {
     if (!isAuthenticated) {
-      alert("로그인이 필요합니다.");
+      Swal.fire("로그인이 필요합니다.", "", "warning");
       navigate("/login");
     } else {
       const fetchUserInfo = async () => {
@@ -74,38 +97,76 @@ export const Mypage = () => {
 
   return (
     <>
-      <p>프로필 수정</p>
-      <StProfileModifyWrap>
+      <Layout title="프로필 수정" />
+      <StyledProfileModifyWrap>
         <form onSubmit={handleInfoChange}>
-          <p>닉네임</p>
-          <input
-            type="text"
-            value={newNickname}
-            onChange={(e) => setNewNickname(e.target.value)}
-            placeholder="새 닉네임"
-          />
-          <p>프로필 이미지</p>
-          <input type="file" />
-          <button type="submit">프로필 업데이트</button>
+          <StyledModifyWrap>
+            <label>NickName</label>
+            <input
+              type="text"
+              value={newNickname}
+              onChange={(e) => setNewNickname(e.target.value)}
+              placeholder="새 닉네임을 입력해주세요"
+            />
+          </StyledModifyWrap>
+          <StyledModifyWrap>
+            <label>Profile Image</label>
+            <input type="file" onChange={handleImgChange} />
+            {imgPreview && (
+              <img src={imgPreview} alt="프로필 이미지 미리보기" />
+            )}
+          </StyledModifyWrap>
+          <StUpdateButton type="submit">프로필 업데이트</StUpdateButton>
         </form>
-      </StProfileModifyWrap>
+      </StyledProfileModifyWrap>
     </>
   );
 };
 
-const StProfileModifyWrap = styled.div`
+const StUpdateButton = styled.button`
+  background-color: #ffc2c2;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  font-family: "Gowun Dodum", sans-serif;
+  font-weight: 600;
+`;
+
+const StyledProfileModifyWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
   max-width: 800px;
-  margin: 0px auto;
+  margin: 0 auto;
   padding: 20px;
-  background-color: rgb(106 185 172 / 53%);
+  background-color: rgba(106, 185, 172, 0.53);
   border-radius: 16px;
+  font-family: "Gowun Dodum", sans-serif;
+`;
 
-  & > p {
-    font-size: 20px;
+const StyledModifyWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+
+  & > label {
+    font-size: 25px;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+
+  & > input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  & > img {
+    margin-top: 10px;
+    max-width: 100%;
+    border-radius: 8px;
   }
 `;

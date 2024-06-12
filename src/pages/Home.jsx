@@ -10,7 +10,7 @@ import { Layout } from "../components/Layout";
 const Home = () => {
   return (
     <>
-      <Layout />
+      <Layout title="MONEY RECORD" />
       {/* <Header title="MONEY RECORD" /> */}
       <StMain>
         <StHomeSection>
