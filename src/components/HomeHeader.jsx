@@ -3,36 +3,26 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../context/AuthContext";
 import profileDefault from "../assets/profileDefault.png";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUserInfo } from "../api/Auth";
 
 export const HomeHeader = ({ title }) => {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
-  const [userInfo, setUserInfo] = useState(null);
 
   const handleLogOut = () => {
     logout();
   };
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await axios.get(
-          "https://moneyfulpublicpolicy.co.kr/user",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setUserInfo(response.data);
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-      }
-    };
-    fetchUserInfo();
-  }, []);
+  const { data: userInfo, error } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: fetchUserInfo,
+    onError: (error) => {
+      console.error("Failed to fetch user info:", error);
+      navigate("/");
+      localStorage.clear();
+    },
+  });
 
   return (
     <StNaviHeader>
