@@ -44,10 +44,11 @@ const MonthButton = () => {
 export default MonthButton;
 
 const StButtonGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, auto);
   justify-content: center;
+  gap: 10px;
 `;
 
 const StButton = styled.button`

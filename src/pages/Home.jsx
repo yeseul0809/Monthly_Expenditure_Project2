@@ -4,14 +4,12 @@ import InputForm from "../components/InputForm";
 import MonthButton from "../components/MonthButton";
 import List from "../components/List";
 import PieChart from "../components/PieChart";
-import Header from "../components/Header";
 import { Layout } from "../components/Layout";
 
 const Home = () => {
   return (
     <>
       <Layout title="MONEY RECORD" />
-      {/* <Header title="MONEY RECORD" /> */}
       <StMain>
         <StHomeSection>
           <InputForm />
@@ -33,7 +31,7 @@ const Home = () => {
 export default Home;
 
 const StMain = styled.main`
-  max-width: 800px;
+  max-width: 1000px;
   width: 100%;
   display: flex;
   flex-direction: column;

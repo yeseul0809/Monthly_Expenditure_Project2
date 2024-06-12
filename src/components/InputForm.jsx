@@ -12,6 +12,7 @@ const InputForm = () => {
   const [category, setCategory] = useState(""); // 지출항목
   const [price, setPrice] = useState(""); // 지출금액
   const [description, setDescription] = useState(""); // 지출내용
+  const [createdBy, setCreatedBy] = useState(""); // 작성자
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const InputForm = () => {
       category,
       price: Number(price),
       description,
+      createdBy,
     };
 
     dispatch(setData([...data, newList]));
@@ -40,6 +42,7 @@ const InputForm = () => {
     setCategory("");
     setPrice("");
     setDescription("");
+    setCreatedBy("");
   };
 
   return (
@@ -82,6 +85,16 @@ const InputForm = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="지출내용"
+        />
+      </StFromGroup>
+      <StFromGroup>
+        <label htmlFor="createdBy">CreatedBy</label>
+        <StInput
+          type="text"
+          id="createdBy"
+          value={createdBy}
+          onChange={(e) => setCreatedBy(e.target.value)}
+          placeholder="작성자"
         />
       </StFromGroup>
       <StInputButton>Save</StInputButton>

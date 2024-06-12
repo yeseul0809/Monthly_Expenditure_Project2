@@ -41,7 +41,7 @@ const Detail = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteData(id));
-        navigate(`/`);
+        navigate(`/home`);
       }
     });
   };
@@ -105,7 +105,7 @@ const Detail = () => {
           <StDetailButton
             $backgroundColor="#4c9b6ee6"
             onClick={() => {
-              navigate(`/`);
+              navigate(`/home`);
             }}
           >
             Back

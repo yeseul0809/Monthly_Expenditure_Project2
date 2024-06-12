@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setData } from "../redux/slices/DataSlice";
-import dummyData from "../dummyData.json";
+import axios from "axios";
 
 const List = () => {
   const { activeIndex, data } = useSelector((state) => state.data);
@@ -21,16 +21,17 @@ const List = () => {
   };
   const filteredData = filterDataByMonth(data, activeIndex);
 
-  // 로컬 스토리지에서 데이터 가져오기
+  // 서버에서 데이터 가져오기
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("localData"));
-    if (storedData) {
-      dispatch(setData(storedData));
-    } else {
-      // 로컬 스토리지에 데이터가 없을 경우 더미데이터로 초기화
-      localStorage.setItem("localData", JSON.stringify(dummyData));
-      dispatch(setData(dummyData));
-    }
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/expenses");
+        dispatch(setData(response.data));
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+    fetchData();
   }, [dispatch]);
 
   return (
@@ -45,7 +46,7 @@ const List = () => {
           <StDataGroup>
             <span>{data.date}</span>
             <span>
-              {data.category} - {data.description}
+              {data.category} - {data.description} : by {data.createdBy}
             </span>
           </StDataGroup>
           <StPrice>{data.price} 원</StPrice>
