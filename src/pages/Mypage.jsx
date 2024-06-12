@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
-import { Layout } from "../components/Layout";
+import { HomeHeader } from "../components/HomeHeader";
 
 // 닉네임, 프로필 사진 변경 UI
 // 1. useEffect 조회
@@ -97,7 +97,7 @@ export const Mypage = () => {
 
   return (
     <>
-      <Layout title="프로필 수정" />
+      <HomeHeader title="프로필 수정" />
       <StyledProfileModifyWrap>
         <form onSubmit={handleInfoChange}>
           <StyledModifyWrap>

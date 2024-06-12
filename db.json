@@ -70,6 +70,30 @@
       "price": "800",
       "description": "책구매",
       "createdBy": "ys0809"
+    },
+    {
+      "id": "22ae59d7-9f2d-45e3-bbf6-826b5a630945",
+      "date": "2024-02-17",
+      "category": "쇼핑",
+      "price": 80000,
+      "description": "책구매",
+      "createdBy": "hys0809!!!"
+    },
+    {
+      "id": "d11eb530-a386-4131-ae98-0548570a71d5",
+      "date": "2024-02-07",
+      "category": "쇼핑",
+      "price": 80000,
+      "description": "책구매",
+      "createdBy": "hys0809!!!"
+    },
+    {
+      "id": "d0b8d54b-aa68-4d13-962e-4b1e97913aec",
+      "date": "2024-05-18",
+      "category": "맛집탐방",
+      "price": 80000,
+      "description": "밥먹었습니다.",
+      "createdBy": "hys0809!!!"
     }
   ]
 }

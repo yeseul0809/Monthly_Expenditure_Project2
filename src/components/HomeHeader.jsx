@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import profileDefault from "../assets/profileDefault.png";
 import axios from "axios";
 
-export const Layout = ({ title }) => {
+export const HomeHeader = ({ title }) => {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState(null);
