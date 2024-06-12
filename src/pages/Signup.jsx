@@ -55,7 +55,7 @@ const SignUp = () => {
       );
       const data = response.data;
       if (data.success) {
-        navigate("/login");
+        navigate("/");
       } else {
         alert("회원가입에 실패했습니다.");
       }
@@ -94,7 +94,7 @@ const SignUp = () => {
             <StButton type="submit">회원가입</StButton>
             <StButton
               onClick={() => {
-                navigate(`/Login`);
+                navigate(`/`);
               }}
             >
               로그인

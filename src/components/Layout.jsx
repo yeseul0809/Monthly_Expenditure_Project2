@@ -12,7 +12,7 @@ export const Layout = ({ title }) => {
 
   const handleLogOut = () => {
     logout();
-    navigate(`/login`);
+    navigate(`/`);
   };
 
   useEffect(() => {

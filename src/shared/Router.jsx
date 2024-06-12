@@ -4,7 +4,6 @@ import Home from "../pages/Home";
 import Detail from "../pages/Detail";
 import Login from "../pages/Login";
 import SignUp from "../pages/Signup";
-import Main from "../pages/Main";
 import { AuthContext } from "../context/AuthContext";
 import { Mypage } from "../pages/Mypage";
 
@@ -26,13 +25,11 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/detail/:id" element={<Detail />} />
-
         {/* <Route path="/home" element={<PrivateRoute element={Home} />} />
         <Route path="/login" element={<PublicRoute element={Login} />} />
         <Route path="/SignUp" element={<PublicRoute element={SignUp} />} /> */}

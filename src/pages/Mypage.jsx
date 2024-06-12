@@ -73,7 +73,7 @@ export const Mypage = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       Swal.fire("로그인이 필요합니다.", "", "warning");
-      navigate("/login");
+      navigate("/");
     } else {
       const fetchUserInfo = async () => {
         try {
