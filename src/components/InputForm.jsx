@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addData } from "../api/Expenses";
 import axios from "axios";
+import { fetchUserInfo } from "../api/Auth";
 
 const InputForm = () => {
   const queryClient = useQueryClient();
@@ -13,27 +14,13 @@ const InputForm = () => {
   const [price, setPrice] = useState(""); // 지출금액
   const [description, setDescription] = useState(""); // 지출내용
 
-  const [logInUserId, setlogInUserId] = useState();
-
-  useEffect(() => {
-    const currentUser = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await axios.get(
-          "https://moneyfulpublicpolicy.co.kr/user",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setlogInUserId(response.data.id);
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-      }
-    };
-    currentUser();
-  }, []);
+  const { data: userInfo } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: fetchUserInfo,
+    onError: (error) => {
+      console.error("Failed to fetch user info:", error);
+    },
+  });
 
   // 지출내역 추가 :: RTK -> tanStack Query 로 변경.
   const addMutation = useMutation({
@@ -62,7 +49,7 @@ const InputForm = () => {
       category,
       price: Number(price),
       description,
-      createdBy: logInUserId,
+      createdBy: userInfo.id,
     };
 
     addMutation.mutate(newList);

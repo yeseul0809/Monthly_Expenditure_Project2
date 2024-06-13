@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DetailFetchData, deleteData, upadateData } from "../api/Expenses";
-import axios from "axios";
+import { fetchUserInfo } from "../api/Auth";
 
 const Detail = () => {
   const queryClient = useQueryClient();
@@ -17,27 +17,13 @@ const Detail = () => {
   const priceRef = useRef("");
   const descriptionRef = useRef("");
 
-  const [logInUserId, setlogInUserId] = useState();
-
-  useEffect(() => {
-    const currentUser = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const response = await axios.get(
-          "https://moneyfulpublicpolicy.co.kr/user",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setlogInUserId(response.data.id);
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-      }
-    };
-    currentUser();
-  }, []);
+  const { data: logInUser } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: fetchUserInfo,
+    onError: (error) => {
+      console.error("Failed to fetch user info:", error);
+    },
+  });
 
   // useQuery 사용하여 데이터 가져오기
   const {
@@ -67,7 +53,7 @@ const Detail = () => {
   const modifyHandler = (e) => {
     e.preventDefault();
 
-    if (selectedExpense.createdBy !== logInUserId) {
+    if (selectedExpense.createdBy !== logInUser.id) {
       alert("수정권한이 없습니다.");
       return;
     }
@@ -86,7 +72,7 @@ const Detail = () => {
   const deleteHandler = (e) => {
     e.preventDefault();
 
-    if (selectedExpense.createdBy !== logInUserId) {
+    if (selectedExpense.createdBy !== logInUser.id) {
       alert("삭제권한이 없습니다.");
       return;
     }

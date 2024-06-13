@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import { HomeHeader } from "../components/HomeHeader";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchUserInfo, updateProfile } from "../api/Auth";
 
 // 닉네임, 프로필 사진 변경 UI
 // 1. useEffect 조회
@@ -17,46 +19,43 @@ export const Mypage = () => {
   const [newNickname, setNewNickname] = useState("");
   const [imgFile, setImgFile] = useState(null);
   const [imgPreview, setImgPreview] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
+  const queryClient = useQueryClient();
 
-  const handleInfoChange = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("accessToken");
-      const formData = new FormData();
-      formData.append("nickname", newNickname);
+  const { data: userInfo, error } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: fetchUserInfo,
+    enabled: isAuthenticated,
+    onError: (error) => {
+      console.error("Failed to fetch user info:", error);
+      Swal.fire("사용자 정보를 가져오는 데 실패했습니다.", "", "error");
+    },
+  });
 
-      if (imgFile) {
-        formData.append("avatar", imgFile);
-      }
-
-      const response = await axios.patch(
-        "https://moneyfulpublicpolicy.co.kr/profile",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.data.success) {
-        setUserInfo((prevState) => ({
-          ...prevState,
-          nickname: response.data.nickname,
-          avatar: response.data.avatar,
-        }));
-        Swal.fire("프로필이 업데이트되었습니다!");
-        setNewNickname("");
-        setImgFile(null);
-        setImgPreview(null);
-      } else {
-        Swal.fire("프로필 업데이트에 실패했습니다.", "", "error");
-      }
-    } catch (error) {
+  const updatemutation = useMutation({
+    mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries("userInfo");
+      Swal.fire("프로필이 업데이트되었습니다!");
+      setNewNickname("");
+      setImgFile(null);
+      setImgPreview(null);
+    },
+    onError: (error) => {
       console.error("Failed to update profile:", error);
       Swal.fire("프로필 업데이트에 실패했습니다.", "", "error");
+    },
+  });
+
+  const handleInfoChange = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("nickname", newNickname);
+
+    if (imgFile) {
+      formData.append("avatar", imgFile);
     }
+
+    updatemutation.mutate(formData);
   };
 
   const handleImgChange = (e) => {
@@ -74,26 +73,12 @@ export const Mypage = () => {
     if (!isAuthenticated) {
       Swal.fire("로그인이 필요합니다.", "", "warning");
       navigate("/");
-    } else {
-      const fetchUserInfo = async () => {
-        try {
-          const token = localStorage.getItem("accessToken");
-          const response = await axios.get(
-            "https://moneyfulpublicpolicy.co.kr/user",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setUserInfo(response.data);
-        } catch (error) {
-          console.error("Failed to fetch user info:", error);
-        }
-      };
-      fetchUserInfo();
     }
   }, [isAuthenticated, navigate]);
+
+  if (error) {
+    return <div>사용자 정보를 가져오는 중 오류가 발생했습니다.</div>;
+  }
 
   return (
     <>
