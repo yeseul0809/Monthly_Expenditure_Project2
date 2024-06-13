@@ -1,65 +1,106 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import Header from "../components/Header";
-import { useDispatch } from "react-redux";
-import { modifyData, deleteData } from "../redux/slices/DataSlice";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { DetailFetchData, deleteData, upadateData } from "../api/Expenses";
+import { useUserInfo } from "../hooks/useUserInfo";
 
 const Detail = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const { id } = useParams();
+
   const dateRef = useRef("");
   const categoryRef = useRef("");
   const priceRef = useRef("");
   const descriptionRef = useRef("");
 
+  const { data: logInUser } = useUserInfo();
+
+  // useQuery 사용하여 데이터 가져오기
+  const {
+    data: selectedExpense,
+    isLoading,
+    error,
+  } = useQuery({ queryKey: ["expenses", id], queryFn: DetailFetchData });
+
+  // 지출내역 수정
+  const modifyMutation = useMutation({
+    mutationFn: upadateData,
+    onSuccess: () => {
+      queryClient.invalidateQueries("expenses");
+      Swal.fire("수정사항이 반영되었습니다.", "", "success");
+      navigate(`/home`);
+    },
+  });
+
+  // 지출내역 삭제
+  const deleteMutation = useMutation({
+    mutationFn: deleteData,
+    onSuccess: () => {
+      queryClient.invalidateQueries("expenses");
+      Swal.fire("지출내역이 삭제되었습니다.", "", "success");
+      navigate(`/home`);
+    },
+  });
+
   const modifyHandler = (e) => {
+    e.preventDefault();
+
+    if (selectedExpense.createdBy !== logInUser.id) {
+      Swal.fire({
+        title: "수정권한이 없습니다.",
+        text: "ACEESS ERROR",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
     const modifiedData = {
       id: id,
       date: dateRef.current.value,
       category: categoryRef.current.value,
       price: priceRef.current.value,
       description: descriptionRef.current.value,
+      createdBy: selectedExpense.createdBy,
     };
-
-    dispatch(modifyData(modifiedData));
-    navigate(`/`);
+    modifyMutation.mutate(modifiedData);
   };
 
   const deleteHandler = (e) => {
-    Swal.fire({
-      title: "정말 이 지출내역을 삭제하시겠습니까?",
-      text: "이 작업은 되돌릴 수 없습니다.",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "삭제",
-      cancelButtonText: "취소",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(deleteData(id));
-        navigate(`/home`);
-      }
-    });
+    e.preventDefault();
+
+    if (selectedExpense.createdBy !== logInUser.id) {
+      Swal.fire({
+        title: "삭제권한이 없습니다.",
+        text: "ACEESS ERROR",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
+    deleteMutation.mutate(id);
   };
 
   // 넘어오는 id 가 달라질때마다 참조 바꾸기
   useEffect(() => {
-    const detailStoredData = JSON.parse(localStorage.getItem("localData"));
-    const detailData = detailStoredData.find((data) => data.id === id);
+    if (selectedExpense) {
+      dateRef.current.value = selectedExpense.date;
+      categoryRef.current.value = selectedExpense.category;
+      priceRef.current.value = selectedExpense.price;
+      descriptionRef.current.value = selectedExpense.description;
+    }
+  }, [selectedExpense]);
 
-    dateRef.current.value = detailData.date;
-    categoryRef.current.value = detailData.category;
-    priceRef.current.value = detailData.price;
-    descriptionRef.current.value = detailData.description;
-  }, [id]);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>
-      <Header title="Modify expenditure" />
       <StDetailWrap>
         <StDetailGroup>
           <label htmlFor="date">Date</label>

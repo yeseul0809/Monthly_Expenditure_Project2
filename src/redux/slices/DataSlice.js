@@ -16,23 +16,8 @@ const dataSlice = createSlice({
       state.data = action.payload;
       localStorage.setItem("localData", JSON.stringify(action.payload));
     },
-    modifyData: (state, action) => {
-      const { id, date, category, price, description } = action.payload;
-      const updatedData = state.data.map((item) =>
-        item.id === id ? { id, date, category, price, description } : item
-      );
-      state.data = updatedData;
-      localStorage.setItem("localData", JSON.stringify(updatedData));
-    },
-    deleteData: (state, action) => {
-      const id = action.payload;
-      const deletedData = state.data.filter((item) => item.id !== id);
-      state.data = deletedData;
-      localStorage.setItem("localData", JSON.stringify(deletedData));
-    },
   },
 });
 
-export const { setActiveIndex, setData, modifyData, deleteData } =
-  dataSlice.actions;
+export const { setActiveIndex, setData } = dataSlice.actions;
 export default dataSlice.reducer;

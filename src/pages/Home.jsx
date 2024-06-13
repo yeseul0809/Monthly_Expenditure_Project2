@@ -4,12 +4,10 @@ import InputForm from "../components/InputForm";
 import MonthButton from "../components/MonthButton";
 import List from "../components/List";
 import PieChart from "../components/PieChart";
-import { Layout } from "../components/Layout";
 
 const Home = () => {
   return (
     <>
-      <Layout title="MONEY RECORD" />
       <StMain>
         <StHomeSection>
           <InputForm />

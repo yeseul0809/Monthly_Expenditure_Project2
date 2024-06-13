@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
-import { Layout } from "../components/Layout";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { updateProfile } from "../api/Auth";
+import { useUserInfo } from "../hooks/useUserInfo";
 
 // 닉네임, 프로필 사진 변경 UI
 // 1. useEffect 조회
@@ -17,46 +18,38 @@ export const Mypage = () => {
   const [newNickname, setNewNickname] = useState("");
   const [imgFile, setImgFile] = useState(null);
   const [imgPreview, setImgPreview] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
+  const queryClient = useQueryClient();
 
-  const handleInfoChange = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("accessToken");
-      const formData = new FormData();
-      formData.append("nickname", newNickname);
+  // 커스텀 훅 사용
+  const { data: userInfo, error } = useUserInfo((error) => {
+    Swal.fire("사용자 정보를 가져오는 데 실패했습니다.", "", "error");
+  });
 
-      if (imgFile) {
-        formData.append("avatar", imgFile);
-      }
-
-      const response = await axios.patch(
-        "https://moneyfulpublicpolicy.co.kr/profile",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.data.success) {
-        setUserInfo((prevState) => ({
-          ...prevState,
-          nickname: response.data.nickname,
-          avatar: response.data.avatar,
-        }));
-        Swal.fire("프로필이 업데이트되었습니다!");
-        setNewNickname("");
-        setImgFile(null);
-        setImgPreview(null);
-      } else {
-        Swal.fire("프로필 업데이트에 실패했습니다.", "", "error");
-      }
-    } catch (error) {
+  const updatemutation = useMutation({
+    mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries("userInfo");
+      Swal.fire("프로필이 업데이트되었습니다!");
+      setNewNickname("");
+      setImgFile(null);
+      setImgPreview(null);
+    },
+    onError: (error) => {
       console.error("Failed to update profile:", error);
       Swal.fire("프로필 업데이트에 실패했습니다.", "", "error");
+    },
+  });
+
+  const handleInfoChange = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("nickname", newNickname);
+
+    if (imgFile) {
+      formData.append("avatar", imgFile);
     }
+
+    updatemutation.mutate(formData);
   };
 
   const handleImgChange = (e) => {
@@ -73,31 +66,16 @@ export const Mypage = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       Swal.fire("로그인이 필요합니다.", "", "warning");
-      navigate("/login");
-    } else {
-      const fetchUserInfo = async () => {
-        try {
-          const token = localStorage.getItem("accessToken");
-          const response = await axios.get(
-            "https://moneyfulpublicpolicy.co.kr/user",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setUserInfo(response.data);
-        } catch (error) {
-          console.error("Failed to fetch user info:", error);
-        }
-      };
-      fetchUserInfo();
+      navigate("/");
     }
   }, [isAuthenticated, navigate]);
 
+  if (error) {
+    return <div>사용자 정보를 가져오는 중 오류가 발생했습니다.</div>;
+  }
+
   return (
     <>
-      <Layout title="프로필 수정" />
       <StyledProfileModifyWrap>
         <form onSubmit={handleInfoChange}>
           <StyledModifyWrap>
@@ -124,13 +102,19 @@ export const Mypage = () => {
 };
 
 const StUpdateButton = styled.button`
-  background-color: #ffc2c2;
+  background-color: #ffdadab3;
   border: none;
   border-radius: 4px;
   font-size: 0.9rem;
   padding: 10px 20px;
   font-family: "Gowun Dodum", sans-serif;
-  font-weight: 600;
+  font-weight: 400;
+  color: #827575;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(106 185 172 / 53%);
+    color: #f27474;
+  }
 `;
 
 const StyledProfileModifyWrap = styled.div`
@@ -141,9 +125,11 @@ const StyledProfileModifyWrap = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(106, 185, 172, 0.53);
+  /* background-color: rgba(106, 185, 172, 0.53); */
   border-radius: 16px;
   font-family: "Gowun Dodum", sans-serif;
+  width: 600px;
+  border: solid rgb(106 185 172 / 53%) 2px;
 `;
 
 const StyledModifyWrap = styled.div`
@@ -154,7 +140,7 @@ const StyledModifyWrap = styled.div`
 
   & > label {
     font-size: 25px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-weight: 600;
   }
 

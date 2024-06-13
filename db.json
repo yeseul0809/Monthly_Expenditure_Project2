@@ -18,7 +18,7 @@
     },
     {
       "id": "0d0a966e-5c35-4bf0-aca4-f2b1265a432d",
-      "date": "2024-01-13",
+      "date": "2024-02-13",
       "category": "식비",
       "price": 2000,
       "description": "메가커피",
@@ -26,9 +26,9 @@
     },
     {
       "id": "9aba6d72-5ee7-4f02-a4d4-e8bbff9ded4b",
-      "date": "2024-01-17",
-      "category": "회식",
-      "price": 210000,
+      "date": "2024-02-17",
+      "category": "식비",
+      "price": 21000,
       "description": "대광참치",
       "createdBy": "Rosie"
     },
@@ -42,19 +42,35 @@
     },
     {
       "id": "d180194f-7c27-428a-8cd9-ad9114e58821",
-      "date": "2024-02-22",
+      "date": "2024-06-22",
       "category": "도서",
-      "price": 83000,
+      "price": 23000,
       "description": "리액트 마스터",
       "createdBy": "Me"
     },
     {
       "id": "0abf06c3-8f0e-4ea1-9691-7facab0a91cb",
-      "date": "2024-02-18",
+      "date": "2024-01-30",
       "category": "외식",
       "price": 100000,
       "description": "세광양대창",
       "createdBy": "Me"
+    },
+    {
+      "id": "d0b8d54b-aa68-4d13-962e-4b1e97913aec",
+      "date": "2024-05-18",
+      "category": "맛집탐방",
+      "price": 80000,
+      "description": "밥먹었습니다.",
+      "createdBy": "hys0809!!!"
+    },
+    {
+      "id": "ec12d56d-72e4-41df-a598-c63a69151992",
+      "date": "2024-06-12",
+      "category": "쇼핑",
+      "price": "11200",
+      "description": "책구매-민음사",
+      "createdBy": "hys0809!!!"
     }
   ]
 }

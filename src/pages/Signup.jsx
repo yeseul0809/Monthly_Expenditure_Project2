@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { StMain, StInput, StButton, StButtonWrap } from "./Login";
-import axios from "axios";
+import { StMain, StInput, StButton, StButtonWrap, StForm } from "./Login";
+import { authApi } from "../api/Auth";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -45,29 +45,29 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://moneyfulpublicpolicy.co.kr/register",
-        {
-          id,
-          password,
-          nickname,
-        }
-      );
+      const response = await authApi.post("/register", {
+        id,
+        password,
+        nickname,
+      });
       const data = response.data;
       if (data.success) {
-        navigate("/login");
-      } else {
-        alert("회원가입에 실패했습니다.");
+        Swal.fire("Welcome!", `회원가입을 축하합니다!`, "success");
+        navigate("/");
       }
     } catch (error) {
-      console.error("회원가입 에러", error);
-      alert("회원가입에 실패했습니다.");
+      console.error("회원가입 에러", error.response.data.message);
+      Swal.fire(
+        "회원가입에 실패했습니다.",
+        error.response.data.message,
+        "error"
+      );
     }
   };
 
   return (
     <>
-      <StSignupForm onSubmit={handleSignUp}>
+      <StForm onSubmit={handleSignUp}>
         <StMain>
           <p>회원가입 아이디</p>
           <StInput
@@ -88,24 +88,22 @@ const SignUp = () => {
             type="text"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            placeholder="닉네임"
+            placeholder="Nickname"
           />
           <StButtonWrap>
             <StButton type="submit">회원가입</StButton>
             <StButton
               onClick={() => {
-                navigate(`/Login`);
+                navigate(`/`);
               }}
             >
               로그인
             </StButton>
           </StButtonWrap>
         </StMain>
-      </StSignupForm>
+      </StForm>
     </>
   );
 };
 
 export default SignUp;
-
-const StSignupForm = styled.form``;
