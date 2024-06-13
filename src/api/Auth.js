@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const AUTH_API = "https://moneyfulpublicpolicy.co.kr";
+export const AUTH_API = "https://moneyfulpublicpolicy.co.kr";
 
 export const fetchUserInfo = async () => {
   const token = localStorage.getItem("accessToken");

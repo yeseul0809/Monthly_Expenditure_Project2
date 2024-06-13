@@ -78,6 +78,14 @@
       "price": "50000",
       "description": "책구매-교보문고",
       "createdBy": "hys0809!!!"
+    },
+    {
+      "id": "4cfa3de6-6598-4464-b46c-90c5703afe05",
+      "date": "2024-06-12",
+      "category": "식사",
+      "price": "9000",
+      "description": "떡볶이 먹기",
+      "createdBy": "hys0809!!!"
     }
   ]
 }

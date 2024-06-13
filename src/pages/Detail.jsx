@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DetailFetchData, deleteData, upadateData } from "../api/Expenses";
-import { fetchUserInfo } from "../api/Auth";
+import { useUserInfo } from "../hooks/useUserInfo";
 
 const Detail = () => {
   const queryClient = useQueryClient();
@@ -16,13 +16,7 @@ const Detail = () => {
   const priceRef = useRef("");
   const descriptionRef = useRef("");
 
-  const { data: logInUser } = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: fetchUserInfo,
-    onError: (error) => {
-      console.error("Failed to fetch user info:", error);
-    },
-  });
+  const { data: logInUser } = useUserInfo();
 
   // useQuery 사용하여 데이터 가져오기
   const {

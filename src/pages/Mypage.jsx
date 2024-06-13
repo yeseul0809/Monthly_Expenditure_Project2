@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchUserInfo, updateProfile } from "../api/Auth";
+import { updateProfile } from "../api/Auth";
+import { useUserInfo } from "../hooks/useUserInfo";
 
 // 닉네임, 프로필 사진 변경 UI
 // 1. useEffect 조회
@@ -19,13 +20,9 @@ export const Mypage = () => {
   const [imgPreview, setImgPreview] = useState(null);
   const queryClient = useQueryClient();
 
-  const { data: userInfo, error } = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: fetchUserInfo,
-    onError: (error) => {
-      console.error("Failed to fetch user info:", error);
-      Swal.fire("사용자 정보를 가져오는 데 실패했습니다.", "", "error");
-    },
+  // 커스텀 훅 사용
+  const { data: userInfo, error } = useUserInfo((error) => {
+    Swal.fire("사용자 정보를 가져오는 데 실패했습니다.", "", "error");
   });
 
   const updatemutation = useMutation({

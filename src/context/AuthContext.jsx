@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const startTokenTime = () => {
-    const expiryTime = 1 * 60 * 1000;
+    const expiryTime = 30 * 60 * 1000;
     setTimeout(logout, expiryTime);
   };
 

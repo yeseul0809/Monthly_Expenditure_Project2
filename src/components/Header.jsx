@@ -1,42 +1,108 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Icon from "../assets/icon.png";
+import { AuthContext } from "../context/AuthContext";
+import profileDefault from "../assets/profileDefault.png";
+import { useUserInfo } from "../hooks/useUserInfo";
 
-const Header = ({ title }) => {
+export const Header = ({ title }) => {
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logout();
+  };
+
+  // 커스텀 훅 사용
+  const { data: userInfo, error } = useUserInfo((error) => {
+    navigate("/");
+    localStorage.clear();
+  });
+
   return (
-    <StHeader>
+    <StNaviHeader>
+      <StLeftWrap>
+        <StNaviButton
+          onClick={() => {
+            navigate(`/home`);
+          }}
+        >
+          HOME
+        </StNaviButton>
+        <StNaviButton onClick={handleLogOut}>LOGOUT</StNaviButton>
+      </StLeftWrap>
       <StTitle>{title}</StTitle>
-      <StIcon src={Icon} alt="Icon" />
-    </StHeader>
+      <StRightWrap>
+        {userInfo && (
+          <StProfileWrap>
+            <StProfileImg
+              src={userInfo.avatar || profileDefault}
+              alt="ProfileImg"
+            />
+            <StNaviButton
+              onClick={() => {
+                navigate(`/Mypage`);
+              }}
+            >
+              MyPage
+            </StNaviButton>
+          </StProfileWrap>
+        )}
+      </StRightWrap>
+    </StNaviHeader>
   );
 };
-
-export default Header;
-
-const StHeader = styled.header`
-  max-width: 800px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.7rem;
-  background-color: #f0f0f0;
-  margin: 15px auto;
-  border-radius: 20px;
-`;
 
 const StTitle = styled.h1`
   font-size: 2.5rem;
   font-weight: bold;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  flex-grow: 1;
+  text-align: center;
 `;
 
-const StIcon = styled.img`
-  width: 50px;
-  height: 50px;
+const StNaviHeader = styled.header`
+  width: 100%;
+  height: 5rem;
+  background-color: #e4e3e3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 20px;
+`;
+
+const StLeftWrap = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const StRightWrap = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 0%.5; /* 아이콘과 제목 사이에 여백 추가 */
+  margin-left: auto;
+`;
+
+const StNaviButton = styled.button`
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: 0;
+  background-color: transparent;
+  font-size: 15px;
+  cursor: pointer;
+`;
+
+const StProfileImg = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`;
+
+const StProfileWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
 `;

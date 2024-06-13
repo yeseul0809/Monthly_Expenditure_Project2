@@ -4,8 +4,7 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addData } from "../api/Expenses";
-import axios from "axios";
-import { fetchUserInfo } from "../api/Auth";
+import { useUserInfo } from "../hooks/useUserInfo";
 
 const InputForm = () => {
   const queryClient = useQueryClient();
@@ -14,13 +13,8 @@ const InputForm = () => {
   const [price, setPrice] = useState(""); // 지출금액
   const [description, setDescription] = useState(""); // 지출내용
 
-  const { data: userInfo } = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: fetchUserInfo,
-    onError: (error) => {
-      console.error("Failed to fetch user info:", error);
-    },
-  });
+  // 커스텀 훅 사용
+  const { data: userInfo } = useUserInfo();
 
   // 지출내역 추가 :: RTK -> tanStack Query 로 변경.
   const addMutation = useMutation({
