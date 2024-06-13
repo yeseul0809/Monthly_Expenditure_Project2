@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
-import axios from "axios";
+import { authApi } from "../api/Auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,13 +15,10 @@ const Login = () => {
   const handleLogIn = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://moneyfulpublicpolicy.co.kr/login?expiresIn=30m",
-        {
-          id,
-          password,
-        }
-      );
+      const response = await authApi.post("/login?expiresIn=10s", {
+        id,
+        password,
+      });
       const data = response.data;
       if (data.success) {
         login(data.accessToken);

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
@@ -11,27 +11,13 @@ export const AuthProvider = ({ children }) => {
   const login = (token) => {
     localStorage.setItem("accessToken", token);
     setIsAuthenticated(true);
-    startTokenTime();
   };
 
   const logout = () => {
     localStorage.clear();
     setIsAuthenticated(false);
-    navigate("/");
+    navigate("/"); // 로그인 페이지로 이동
   };
-
-  const startTokenTime = () => {
-    const expiryTime = 30 * 60 * 1000;
-    setTimeout(logout, expiryTime);
-  };
-
-  useEffect(() => {
-    if (token) {
-      startTokenTime();
-    } else {
-      navigate("/");
-    }
-  }, [token]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

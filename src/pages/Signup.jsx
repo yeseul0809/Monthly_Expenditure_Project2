@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { StMain, StInput, StButton, StButtonWrap } from "./Login";
-import axios from "axios";
+import { authApi } from "../api/Auth";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -45,23 +45,20 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://moneyfulpublicpolicy.co.kr/register",
-        {
-          id,
-          password,
-          nickname,
-        }
-      );
+      const response = await authApi.post("/register", {
+        id,
+        password,
+        nickname,
+      });
       const data = response.data;
       if (data.success) {
         navigate("/");
       } else {
-        alert("회원가입에 실패했습니다.");
+        Swal.fire("회원가입에 실패했습니다.", "", "error");
       }
     } catch (error) {
       console.error("회원가입 에러", error);
-      alert("회원가입에 실패했습니다.");
+      Swal.fire("회원가입에 실패했습니다.", "", "error");
     }
   };
 
