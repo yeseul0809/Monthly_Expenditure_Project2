@@ -102,13 +102,19 @@ export const Mypage = () => {
 };
 
 const StUpdateButton = styled.button`
-  background-color: #ffc2c2;
+  background-color: #ffdadab3;
   border: none;
   border-radius: 4px;
   font-size: 0.9rem;
   padding: 10px 20px;
   font-family: "Gowun Dodum", sans-serif;
-  font-weight: 600;
+  font-weight: 400;
+  color: #827575;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(106 185 172 / 53%);
+    color: #f27474;
+  }
 `;
 
 const StyledProfileModifyWrap = styled.div`
@@ -119,9 +125,11 @@ const StyledProfileModifyWrap = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(106, 185, 172, 0.53);
+  /* background-color: rgba(106, 185, 172, 0.53); */
   border-radius: 16px;
   font-family: "Gowun Dodum", sans-serif;
+  width: 600px;
+  border: solid rgb(106 185 172 / 53%) 2px;
 `;
 
 const StyledModifyWrap = styled.div`
@@ -132,7 +140,7 @@ const StyledModifyWrap = styled.div`
 
   & > label {
     font-size: 25px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-weight: 600;
   }
 

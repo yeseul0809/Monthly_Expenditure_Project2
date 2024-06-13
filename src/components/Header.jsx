@@ -44,7 +44,7 @@ export const Header = ({ title }) => {
                 navigate(`/Mypage`);
               }}
             >
-              MyPage
+              MYPAGE
             </StNaviButton>
           </StProfileWrap>
         )}
@@ -65,8 +65,8 @@ const StTitle = styled.h1`
 
 const StNaviHeader = styled.header`
   width: 100%;
-  height: 5rem;
-  background-color: #e4e3e3;
+  height: 6rem;
+  background-color: #e0999933;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,11 +92,17 @@ const StNaviButton = styled.button`
   background-color: transparent;
   font-size: 15px;
   cursor: pointer;
+  color: #f27474;
+  font-weight: 600;
+
+  &:hover {
+    color: rgb(106 185 172 / 53%);
+  }
 `;
 
 const StProfileImg = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 43px;
+  height: 43px;
   border-radius: 50%;
 `;
 

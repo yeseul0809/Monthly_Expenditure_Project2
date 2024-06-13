@@ -17,6 +17,7 @@ const PublicRoute = ({ element: Element, ...rest }) => {
   const { isAuthenticated } = useContext(AuthContext);
   return !isAuthenticated ? <Element {...rest} /> : <Navigate to="/mypage" />;
 };
+
 const Router = () => {
   return (
     <BrowserRouter>

@@ -2,7 +2,6 @@
   "expenses": [
     {
       "id": "46869445-5f9c-4650-941f-41bd9457bc07",
-      "month": 1,
       "date": "2024-01-03",
       "category": "개인사업",
       "price": 1000000,
@@ -11,7 +10,6 @@
     },
     {
       "id": "a5c0d8de-d010-4d07-9934-29765051a7ea",
-      "month": 1,
       "date": "2024-01-07",
       "category": "개인사업",
       "price": 1000,
@@ -20,7 +18,6 @@
     },
     {
       "id": "0d0a966e-5c35-4bf0-aca4-f2b1265a432d",
-      "month": 1,
       "date": "2024-02-13",
       "category": "식비",
       "price": 2000,
@@ -29,7 +26,6 @@
     },
     {
       "id": "9aba6d72-5ee7-4f02-a4d4-e8bbff9ded4b",
-      "month": 1,
       "date": "2024-02-17",
       "category": "식비",
       "price": 21000,
@@ -38,7 +34,6 @@
     },
     {
       "id": "b82b213e-8164-4c89-94b0-7246cdcfc4f9",
-      "month": 1,
       "date": "2024-01-21",
       "category": "식비",
       "price": 412000,
@@ -47,7 +42,6 @@
     },
     {
       "id": "d180194f-7c27-428a-8cd9-ad9114e58821",
-      "month": 1,
       "date": "2024-06-22",
       "category": "도서",
       "price": 23000,
@@ -56,7 +50,6 @@
     },
     {
       "id": "0abf06c3-8f0e-4ea1-9691-7facab0a91cb",
-      "month": 1,
       "date": "2024-01-30",
       "category": "외식",
       "price": 100000,
@@ -72,19 +65,11 @@
       "createdBy": "hys0809!!!"
     },
     {
-      "id": "28ca3e7c-2adc-4fc0-9ac6-686ec9b68117",
-      "date": "2024-05-24",
-      "category": "쇼핑",
-      "price": "50000",
-      "description": "책구매-교보문고",
-      "createdBy": "hys0809!!!"
-    },
-    {
-      "id": "4cfa3de6-6598-4464-b46c-90c5703afe05",
+      "id": "ec12d56d-72e4-41df-a598-c63a69151992",
       "date": "2024-06-12",
-      "category": "식사",
-      "price": "9000",
-      "description": "신전떡볶이 먹기",
+      "category": "쇼핑",
+      "price": "11200",
+      "description": "책구매-민음사",
       "createdBy": "hys0809!!!"
     }
   ]

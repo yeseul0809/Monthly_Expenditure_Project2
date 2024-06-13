@@ -25,16 +25,22 @@ const GlobalStyles = createGlobalStyle`
     display: flex !important;
     justify-content: center !important;
     margin: auto;
-    padding: 5px;
     }
     .swal2-icon-content {
        color: #e22a2a;
     }
-    
     .swal2-popup{
-        width: 34rem;
+        width: 30rem;
+        height: 20rem;
+        padding: 25px;
+        grid-row: 1;
     }
-
+    .swal2-container{
+        grid-row: 1;
+    }
+    .swal2-success-circular-line-right{
+        display: none;
+    }
 
     .swal2-confirm.swal2-styled{
     background-color: #e98282;

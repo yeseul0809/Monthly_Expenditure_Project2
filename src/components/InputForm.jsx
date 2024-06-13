@@ -10,7 +10,7 @@ const InputForm = () => {
   const queryClient = useQueryClient();
   const [date, setDate] = useState("2024-06-12"); // 날짜
   const [category, setCategory] = useState(""); // 지출항목
-  const [price, setPrice] = useState(""); // 지출금액
+  const [price, setPrice] = useState(0); // 지출금액
   const [description, setDescription] = useState(""); // 지출내용
 
   // 커스텀 훅 사용

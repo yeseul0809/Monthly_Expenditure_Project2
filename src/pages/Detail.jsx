@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DetailFetchData, deleteData, upadateData } from "../api/Expenses";
@@ -30,6 +31,7 @@ const Detail = () => {
     mutationFn: upadateData,
     onSuccess: () => {
       queryClient.invalidateQueries("expenses");
+      Swal.fire("수정사항이 반영되었습니다.", "", "success");
       navigate(`/home`);
     },
   });
@@ -39,6 +41,7 @@ const Detail = () => {
     mutationFn: deleteData,
     onSuccess: () => {
       queryClient.invalidateQueries("expenses");
+      Swal.fire("지출내역이 삭제되었습니다.", "", "success");
       navigate(`/home`);
     },
   });
@@ -47,7 +50,12 @@ const Detail = () => {
     e.preventDefault();
 
     if (selectedExpense.createdBy !== logInUser.id) {
-      alert("수정권한이 없습니다.");
+      Swal.fire({
+        title: "수정권한이 없습니다.",
+        text: "ACEESS ERROR",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
       return;
     }
 
@@ -66,7 +74,12 @@ const Detail = () => {
     e.preventDefault();
 
     if (selectedExpense.createdBy !== logInUser.id) {
-      alert("삭제권한이 없습니다.");
+      Swal.fire({
+        title: "삭제권한이 없습니다.",
+        text: "ACEESS ERROR",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
       return;
     }
 

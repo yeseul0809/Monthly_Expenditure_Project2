@@ -15,7 +15,7 @@ const Login = () => {
   const handleLogIn = async (e) => {
     e.preventDefault();
     try {
-      const response = await authApi.post("/login?expiresIn=10s", {
+      const response = await authApi.post("/login?expiresIn=60m", {
         id,
         password,
       });
@@ -44,7 +44,7 @@ const Login = () => {
 
   return (
     <>
-      <form onSubmit={handleLogIn}>
+      <StForm onSubmit={handleLogIn}>
         <StMain>
           <p>로그인 아이디</p>
           <StInput
@@ -71,30 +71,40 @@ const Login = () => {
             </StButton>
           </StButtonWrap>
         </StMain>
-      </form>
+      </StForm>
     </>
   );
 };
 
 export const StMain = styled.main`
   max-width: 800px;
-  width: 100%;
+  width: 60%;
+  height: 370px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin: 0px auto;
   justify-content: center;
   align-items: center;
+  background-color: beige;
+  border-radius: 20px;
+  padding: 20px;
 
   & > p {
     font-size: 20px;
+    font-weight: 700;
   }
+`;
+
+export const StForm = styled.form`
+  margin-top: 50px;
 `;
 
 export const StInput = styled.input`
   background-color: lightblue;
   height: 40px;
   width: 600px;
+  padding-left: 5px;
 `;
 
 export const StButton = styled.button`
@@ -105,6 +115,9 @@ export const StButton = styled.button`
   background-color: bisque;
   border-radius: 20px;
   border: 0.5px;
+  font-family: "Gowun Dodum", sans-serif;
+  font-size: 15px;
+  cursor: pointer;
 `;
 
 export const StButtonWrap = styled.div`
