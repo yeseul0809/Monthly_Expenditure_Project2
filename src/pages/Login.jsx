@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://moneyfulpublicpolicy.co.kr/login",
+        "https://moneyfulpublicpolicy.co.kr/login?expiresIn=1m",
         {
           id,
           password,

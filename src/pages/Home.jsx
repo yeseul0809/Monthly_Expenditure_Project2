@@ -4,12 +4,10 @@ import InputForm from "../components/InputForm";
 import MonthButton from "../components/MonthButton";
 import List from "../components/List";
 import PieChart from "../components/PieChart";
-import { HomeHeader } from "../components/HomeHeader";
 
 const Home = () => {
   return (
     <>
-      <HomeHeader title="MONEY RECORD" />
       <StMain>
         <StHomeSection>
           <InputForm />

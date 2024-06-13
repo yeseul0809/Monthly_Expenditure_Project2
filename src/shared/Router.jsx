@@ -4,8 +4,9 @@ import Home from "../pages/Home";
 import Detail from "../pages/Detail";
 import Login from "../pages/Login";
 import SignUp from "../pages/Signup";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext, AuthProvider } from "../context/AuthContext";
 import { Mypage } from "../pages/Mypage";
+import Layout from "../components/Layout";
 
 const PrivateRoute = ({ element: Element, ...rest }) => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -16,17 +17,23 @@ const PublicRoute = ({ element: Element, ...rest }) => {
   const { isAuthenticated } = useContext(AuthContext);
   return !isAuthenticated ? <Element {...rest} /> : <Navigate to="/mypage" />;
 };
-
 const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/mypage" element={<PrivateRoute element={Mypage} />} />
-        <Route path="/detail/:id" element={<PrivateRoute element={Detail} />} />
-        <Route path="/home" element={<PrivateRoute element={Home} />} />
-        <Route path="/SignUp" element={<PublicRoute element={SignUp} />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<PublicRoute element={SignUp} />} />
+          <Route element={<Layout />}>
+            <Route path="/home" element={<PrivateRoute element={Home} />} />
+            <Route path="/mypage" element={<PrivateRoute element={Mypage} />} />
+            <Route
+              path="/detail/:id"
+              element={<PrivateRoute element={Detail} />}
+            />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 };

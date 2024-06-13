@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DetailFetchData, deleteData, upadateData } from "../api/Expenses";
 import { fetchUserInfo } from "../api/Auth";
@@ -95,7 +94,6 @@ const Detail = () => {
 
   return (
     <>
-      <Header title="Modify expenditure" />
       <StDetailWrap>
         <StDetailGroup>
           <label htmlFor="date">Date</label>

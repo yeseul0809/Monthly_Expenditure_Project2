@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
-import { HomeHeader } from "../components/HomeHeader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchUserInfo, updateProfile } from "../api/Auth";
 
@@ -24,7 +22,6 @@ export const Mypage = () => {
   const { data: userInfo, error } = useQuery({
     queryKey: ["userInfo"],
     queryFn: fetchUserInfo,
-    enabled: isAuthenticated,
     onError: (error) => {
       console.error("Failed to fetch user info:", error);
       Swal.fire("사용자 정보를 가져오는 데 실패했습니다.", "", "error");
@@ -82,7 +79,6 @@ export const Mypage = () => {
 
   return (
     <>
-      <HomeHeader title="프로필 수정" />
       <StyledProfileModifyWrap>
         <form onSubmit={handleInfoChange}>
           <StyledModifyWrap>
