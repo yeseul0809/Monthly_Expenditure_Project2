@@ -1,14 +1,30 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "../api/Expenses";
 
 const PieChart = () => {
-  const { activeIndex, data } = useSelector((state) => state.data);
+  const { activeIndex } = useSelector((state) => state.data);
+
+  const {
+    data: expenses,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["expenses"],
+    queryFn: fetchData,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   // 선택된 월의 데이터만 필터링
   const filteredData = activeIndex
-    ? data.filter((item) => new Date(item.date).getMonth() === activeIndex - 1)
-    : data;
+    ? expenses.filter(
+        (item) => new Date(item.date).getMonth() === activeIndex - 1
+      )
+    : expenses;
 
   // 카테고리별 지출 금액 계산
   const categoryData = filteredData.reduce((acc, item) => {

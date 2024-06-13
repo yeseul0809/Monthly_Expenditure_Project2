@@ -29,14 +29,19 @@ export const Mypage = () => {
     mutationFn: updateProfile,
     onSuccess: () => {
       queryClient.invalidateQueries("userInfo");
-      Swal.fire("프로필이 업데이트되었습니다!");
+      Swal.fire("수정사항이 반영되었습니다!", "", "success");
       setNewNickname("");
       setImgFile(null);
       setImgPreview(null);
+      navigate("/home");
     },
     onError: (error) => {
       console.error("Failed to update profile:", error);
-      Swal.fire("프로필 업데이트에 실패했습니다.", "", "error");
+      Swal.fire(
+        error.response.data.message,
+        "프로필 업데이트에 실패했습니다.",
+        "error"
+      );
     },
   });
 

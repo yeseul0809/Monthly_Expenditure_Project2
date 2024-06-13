@@ -5,11 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setData } from "../redux/slices/DataSlice";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "../api/Expenses";
 
 const List = () => {
-  const { activeIndex, data } = useSelector((state) => state.data);
+  const { activeIndex } = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // useQuery사용
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["expenses"],
+    queryFn: fetchData,
+    onSuccess: (data) => dispatch(setData(data)),
+  });
 
   // 클릭한 월 에 맞는 데이터 필터링
   const filterDataByMonth = (data, activeIndex) => {
@@ -19,20 +28,12 @@ const List = () => {
         new Date(item.date).getMonth() + 1 === (activeIndex || currentMonth)
     );
   };
-  const filteredData = filterDataByMonth(data, activeIndex);
 
-  // 서버에서 데이터 가져오기
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/expenses");
-        dispatch(setData(response.data));
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
-    fetchData();
-  }, [dispatch]);
+  //data가 로드되기 전에 filter를 호출하지 않도록 조건을 추가해야 한다.
+  const filteredData = data ? filterDataByMonth(data, activeIndex) : [];
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <StList>
